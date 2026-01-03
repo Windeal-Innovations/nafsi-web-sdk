@@ -6,7 +6,10 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack --watch --mode development",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 8000",
+    "start": "node server.js",
+    "cdn": "npm run build && npm start",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "nafsi",
@@ -17,6 +20,19 @@
   ],
   "author": "Nafsi AI",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nafsi-ai/nafsi-web-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nafsi-ai/nafsi-web-sdk/issues"
+  },
+  "homepage": "https://nafsi.ai",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.23.0",
@@ -24,5 +40,8 @@
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
 }
