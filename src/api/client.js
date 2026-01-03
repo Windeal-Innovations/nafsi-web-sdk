@@ -2,8 +2,9 @@
  * API Client for submitting verification requests
  */
 export class APIClient {
-  constructor(apiUrl) {
+  constructor(apiUrl, accessToken = null) {
     this.apiUrl = apiUrl;
+    this.accessToken = accessToken;
   }
 
   /**
@@ -13,11 +14,18 @@ export class APIClient {
    */
   async submit(payload) {
     try {
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      // Add Authorization header if accessToken is provided
+      if (this.accessToken) {
+        headers['Authorization'] = `Bearer ${this.accessToken}`;
+      }
+
       const response = await fetch(this.apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify(payload)
       });
 

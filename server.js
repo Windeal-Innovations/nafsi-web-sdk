@@ -46,19 +46,20 @@ app.get('/health', (req, res) => {
 
 // Verify endpoint - serves dynamic HTML with query parameters
 app.get('/v1/verify', (req, res) => {
-  const { workflowId, clientId, apiUrl } = req.query;
+  const { workflowId, clientId, apiUrl, accessToken } = req.query;
 
   // Validate required parameters
   if (!workflowId || !clientId) {
     return res.status(400).json({
       error: 'Bad Request',
       message: 'Missing required parameters: workflowId and clientId are required',
-      usage: '/v1/verify?workflowId=xxx&clientId=yyy&apiUrl=zzz (apiUrl is optional)'
+      usage: '/v1/verify?workflowId=xxx&clientId=yyy&accessToken=zzz&apiUrl=www (accessToken and apiUrl are optional)'
     });
   }
 
   // Default API URL if not provided
   const finalApiUrl = apiUrl || 'https://apisv2.windeal.co.ke/postdata';
+  const finalAccessToken = accessToken || null;
 
   // Serve dynamic HTML page
   res.send(`<!DOCTYPE html>
@@ -204,7 +205,8 @@ app.get('/v1/verify', (req, res) => {
       <strong>🔧 Configuration:</strong><br>
       Workflow ID: <code>${workflowId}</code><br>
       Client ID: <code>${clientId}</code><br>
-      API URL: <code>${finalApiUrl}</code>
+      API URL: <code>${finalApiUrl}</code><br>
+      ${finalAccessToken ? `Access Token: <code>${finalAccessToken.substring(0, 20)}...${finalAccessToken.substring(finalAccessToken.length - 10)}</code><br>` : ''}
     </div>
 
     <div class="info-box">
@@ -243,7 +245,7 @@ app.get('/v1/verify', (req, res) => {
     const CONFIG = {
       workflowId: '${workflowId}',
       clientId: '${clientId}',
-      apiUrl: '${finalApiUrl}'
+      apiUrl: '${finalApiUrl}'${finalAccessToken ? `,\n      accessToken: '${finalAccessToken}'` : ''}
     };
 
     // Display SDK version
@@ -269,6 +271,7 @@ app.get('/v1/verify', (req, res) => {
           workflowId: CONFIG.workflowId,
           clientId: CONFIG.clientId,
           apiUrl: CONFIG.apiUrl,
+          accessToken: CONFIG.accessToken,
           debug: true,
 
           onSuccess: function(result) {
@@ -318,7 +321,7 @@ app.use((req, res) => {
     availableEndpoints: [
       '/v1/nafsi.js',
       '/v1/nafsi.js.map',
-      '/v1/verify?workflowId=xxx&clientId=yyy&apiUrl=zzz',
+      '/v1/verify?workflowId=xxx&clientId=yyy&accessToken=zzz&apiUrl=www',
       '/v1/version',
       '/health'
     ]

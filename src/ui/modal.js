@@ -769,7 +769,7 @@ export class Modal {
     processingEl.style.display = 'block';
 
     try {
-      const apiClient = new APIClient(this.config.apiUrl);
+      const apiClient = new APIClient(this.config.apiUrl, this.config.accessToken);
 
       const payload = {
         client_id: this.config.clientId,

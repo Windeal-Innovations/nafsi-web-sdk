@@ -24,6 +24,7 @@ class NafsiSDK {
    * @param {Function} options.onSuccess - Success callback
    * @param {Function} options.onFailure - Failure callback
    * @param {string} options.apiUrl - API endpoint URL (optional)
+   * @param {string} options.accessToken - Bearer token for API authentication (optional)
    * @param {string} options.theme - UI theme (optional)
    * @param {string} options.language - Language (optional)
    * @param {boolean} options.debug - Enable debug logging (optional)
@@ -55,6 +56,7 @@ class NafsiSDK {
         onSuccess: options.onSuccess || (() => {}),
         onFailure: options.onFailure || (() => {}),
         apiUrl: options.apiUrl || this.config.get('apiUrl'),
+        accessToken: options.accessToken || null,
         theme: options.theme || this.config.get('theme'),
         language: options.language || this.config.get('language'),
         debug: options.debug || false,
