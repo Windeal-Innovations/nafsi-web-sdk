@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 
 const app = express();
@@ -21,21 +20,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve the SDK with proper caching and content type
-app.get('/v1/nafsi.js', (req, res) => {
-  res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.sendFile(path.join(__dirname, 'dist', 'nafsi.js'));
-});
-
-// Serve source map
-app.get('/v1/nafsi.js.map', (req, res) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=3600');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.sendFile(path.join(__dirname, 'dist', 'nafsi.js.map'));
-});
+// Serve static files from public directory
+// This will serve public/v1/nafsi.js at /v1/nafsi.js
+app.use(express.static('public', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+    }
+    if (path.endsWith('.map')) {
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+  }
+}));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

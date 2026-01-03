@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  nafsi-web-sdk:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nafsi-web-sdk-dev
+    restart: unless-stopped
+    ports:
+      - "4413:4413"
+    volumes:
+      - ./src:/app/src
+      - ./dist:/app/dist
+    environment:
+      - NODE_ENV=development
+      - PORT=4413
+    command: npm run dev

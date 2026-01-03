@@ -7,17 +7,19 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
 
-# Install build dependencies temporarily
-RUN npm install --only=dev
+# Copy server files, setup script, and pre-built dist
+COPY server.js ./
+COPY setup-public.sh ./
+COPY dist/ ./dist/
 
-# Copy source
-COPY . .
+# Verify dist exists
+RUN if [ ! -f dist/nafsi.js ]; then \
+      echo "ERROR: dist/nafsi.js not found. Please run 'npm run build' before building Docker image."; \
+      exit 1; \
+    fi
 
-# Build the SDK
-RUN npm run build
-
-# Remove dev dependencies to reduce image size
-RUN npm prune --production
+# Setup public directory with symbolic links
+RUN chmod +x setup-public.sh && bash setup-public.sh
 
 # App port
 EXPOSE 4413

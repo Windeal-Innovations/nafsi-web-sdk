@@ -5,10 +5,15 @@
   "main": "dist/nafsi.js",
   "scripts": {
     "build": "webpack",
+    "postbuild": "bash setup-public.sh",
     "dev": "webpack --watch --mode development",
     "serve": "python3 -m http.server 8000",
     "start": "node server.js",
     "cdn": "npm run build && npm start",
+    "docker:build": "npm run build && docker build -t nafsi-web-sdk .",
+    "docker:run": "docker run -d -p 4413:4413 --name nafsi-web-sdk nafsi-web-sdk",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:prod": "npm run build && docker-compose up -d",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

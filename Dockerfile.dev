@@ -1,0 +1,20 @@
+FROM node:18-alpine
+
+# Create app directory
+WORKDIR /app
+
+# Install all dependencies (including dev dependencies)
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the SDK from source
+RUN npm run build
+
+# App port
+EXPOSE 4413
+
+# Start app in development mode
+CMD ["npm", "run", "dev"]
