@@ -11,22 +11,23 @@ RUN npm install
 COPY src/ ./src/
 COPY webpack.config.js ./
 COPY .babelrc ./
-
-# Build the SDK (creates dist/ folder)
-RUN npm run build
-
-# Copy server files and setup script
-COPY server.js ./
 COPY setup-public.sh ./
 
-# Verify dist exists
+# Build the SDK (creates dist/ folder and runs postbuild → setup-public.sh)
+RUN npm run build
+
+# Copy server files
+COPY server.js ./
+
+# Verify dist and public directory exist
 RUN if [ ! -f dist/nafsi.js ]; then \
       echo "ERROR: dist/nafsi.js not found after build"; \
       exit 1; \
+    fi && \
+    if [ ! -f public/v1/nafsi.js ]; then \
+      echo "ERROR: public/v1/nafsi.js symlink not created"; \
+      exit 1; \
     fi
-
-# Setup public directory with symbolic links
-RUN chmod +x setup-public.sh && sh setup-public.sh
 
 # Remove dev dependencies to reduce image size
 RUN npm prune --production
