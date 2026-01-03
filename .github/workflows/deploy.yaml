@@ -17,27 +17,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Build SDK
-      run: npm run build
-
-    - name: Verify Build Output
-      run: |
-        if [ ! -f dist/nafsi.js ]; then
-          echo "Error: dist/nafsi.js not found after build"
-          exit 1
-        fi
-        echo "✅ Build successful - dist/nafsi.js created"
-        ls -lh dist/
-
     - name: Login to GHCR
       uses: docker/login-action@v3
       with:
