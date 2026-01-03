@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Setup script to create public directory structure and symbolic links
 
 set -e

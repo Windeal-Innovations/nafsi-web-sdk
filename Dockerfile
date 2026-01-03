@@ -26,7 +26,7 @@ RUN if [ ! -f dist/nafsi.js ]; then \
     fi
 
 # Setup public directory with symbolic links
-RUN chmod +x setup-public.sh && bash setup-public.sh
+RUN chmod +x setup-public.sh && sh setup-public.sh
 
 # Remove dev dependencies to reduce image size
 RUN npm prune --production
