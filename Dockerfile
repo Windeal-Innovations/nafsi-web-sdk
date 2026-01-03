@@ -6,7 +6,7 @@ WORKDIR /app
 # Install dependencies first (better caching)
 COPY package*.json ./
 RUN npm install --production
-
+RUN npm run build
 # Copy server files, setup script, and pre-built dist
 COPY server.js ./
 COPY setup-public.sh ./
