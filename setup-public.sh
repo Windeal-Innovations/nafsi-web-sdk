@@ -12,6 +12,8 @@ mkdir -p public/v1
 cd public/v1
 ln -sf ../../dist/nafsi.js nafsi.js
 ln -sf ../../dist/nafsi.js.map nafsi.js.map
+ln -sf ../test.html index.html
+
 
 echo "✅ Symbolic links created:"
 ls -lh
