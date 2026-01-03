@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 4413;
+const PORT = 4413;
 
 // Enable CORS for all origins (SDK needs to be loaded from any domain)
 app.use(cors({
